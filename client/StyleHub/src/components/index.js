@@ -1,3 +1,7 @@
 import Header from "./Header/Header";
+import Home from "./Home/Home.jsx";
+import Filter from "./Filter/Filter.jsx";
+import Products from "./Cart/Products.jsx";
+import Rating from "./Rating/Rating.jsx";
 
-export { Header };
+export { Header, Home, Filter, Products, Rating };

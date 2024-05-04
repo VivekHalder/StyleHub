@@ -1,10 +1,11 @@
-import { Header } from "./components"
+import { Header, Home } from "./components"
 
 function App() {
 
   return (
     <>
       <Header/>
+      <Home/>
     </>
   )
 }
