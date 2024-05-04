@@ -10,6 +10,8 @@ function CartProvider({ children }) {
         return arr[Math.floor(arr.length * Math.random())];
     }
 
+    faker.seed(99)
+
     const products = [...Array(200)].map(() => ({
         id: faker.commerce.isbn(),
         name: faker.commerce.productName(),
