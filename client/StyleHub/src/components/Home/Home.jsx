@@ -10,7 +10,7 @@ function Home() {
   return (
     <div className='flex'>
         <Filter/>
-        <div className='productContainer'>
+        <div className='productContainer flex grid'>
             {
                 products.map((product) => (
                     <Products product={ product } key={ product.id }/>
