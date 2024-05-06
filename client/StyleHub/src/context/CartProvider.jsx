@@ -19,7 +19,7 @@ function CartProvider({ children }) {
         image: faker.image.urlLoremFlickr({ category: 'fashion' }),
         inStock: generateRandom([0, 3, 5, 7, 10, 13]),
         fastDelivery: faker.datatype.boolean(),
-        rating: faker.seed([0, 1, 2, 3, 4, 5]),
+        rating: generateRandom([0, 1, 2, 3, 4, 5]),
         category: generateRandom(["All Categories", "Tops", "Bottoms", "Dresses", "Outerwear", "Activewear"])
     }));
     

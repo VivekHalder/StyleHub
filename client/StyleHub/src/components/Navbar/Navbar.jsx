@@ -1,8 +1,22 @@
 ;import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell, faShoppingCart } from '@fortawesome/free-solid-svg-icons'
+import { faBell } from '@fortawesome/free-solid-svg-icons'
+import Dropdown from 'react-bootstrap/Dropdown'
+import Badge from 'react-bootstrap/Badge'
+import Button from 'react-bootstrap/Button'
+import { FaShoppingCart } from 'react-icons/fa'
+import { useCartContext } from '../../context/CartProvider';
+import { AiFillDelete } from 'react-icons/ai'
+import { Link } from 'react-router-dom'
+import '../style.css'
 
-function Header() {
+function Navbar() {
+
+    const { 
+        state: { cart },
+        dispatch
+    } = useCartContext();
+
   return (
     <>
         <div className='h-1/8 pb-3 bg-white flex' style={{borderBottom: '1px solid #ccc'}}>
@@ -42,8 +56,65 @@ function Header() {
                     <li className='my-auto pl-3 pl-5'>
                         <FontAwesomeIcon icon={ faBell } />
                     </li>
-                    <li className='my-auto pl-3 pl-5'>
-                        <FontAwesomeIcon icon={ faShoppingCart } />
+                    <li>
+                        <Dropdown>
+                            <Dropdown.Toggle variant='success'>
+                                <FaShoppingCart color='white' fontSize='25px'/>
+                                <Badge>{ cart.length }</Badge>
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu>
+                                {
+                                    cart.length > 0 ? 
+                                    (
+                                        <>
+                                            {
+                                                cart.map( ( product ) => (
+                                                    <span className='cartItem' key={ product.id }>
+                                                        <img 
+                                                            src={ product.image } 
+                                                            alt={ product.name } 
+                                                            className='cartItemImg'
+                                                        />
+                                                        <div className='cartItemDetails'>
+                                                            <span>
+                                                                {
+                                                                    product.name
+                                                                }
+                                                            </span>
+                                                            <span>
+                                                                {
+                                                                    product.price.split(".")[0]
+                                                                }
+                                                            </span>
+                                                        </div>
+                                                        <AiFillDelete
+                                                            fontSize='20px'
+                                                            style={ { cursor: 'pointer' } }
+                                                            onClick={( () => dispatch({
+                                                                type: 'REMOVE_FROM_CART',
+                                                                payload: product.id
+                                                            }) )}
+                                                        />
+                                                    </span>
+                                                ) )
+                                            }
+                                        </>
+                                    )
+                                    :
+                                    (
+                                        <span style={ { padding: 10 } }>
+                                            Cart is Empty!
+                                        </span>
+                                    )
+                                }
+                                <Link to='/cart'>
+                                    <Button style={{ width: '95%', margin: '0 10px' }}>
+
+                                    </Button>
+                                </Link>
+                            </Dropdown.Menu>
+                        </Dropdown>
                     </li>
                     <li className='my-auto pl-3 pl-5'>
                         Account
@@ -52,7 +123,7 @@ function Header() {
             </div>
         </div>
     </>
-  )
+  );
 }
 
-export default Header
+export default Navbar
