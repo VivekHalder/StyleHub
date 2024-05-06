@@ -56,7 +56,7 @@ function Navbar() {
                     <li className='my-auto pl-3 pl-5'>
                         <FontAwesomeIcon icon={ faBell } />
                     </li>
-                    <li>
+                    <li className='flex'>
                         <Dropdown>
                             <Dropdown.Toggle variant='success'>
                                 <FaShoppingCart color='white' fontSize='25px'/>
