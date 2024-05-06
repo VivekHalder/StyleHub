@@ -36,7 +36,7 @@ function Products({ product }) {
         </Card.Subtitle>
         {
           cart.some( ( prod ) => prod.id === product.id ) ? (
-            <Button onClick={ dispatch( {
+            <Button onClick={ () => dispatch( {
               type: "REMOVE_FROM_CART",
               payload: product.id
             } ) } variant='danger'>
@@ -45,7 +45,7 @@ function Products({ product }) {
           )
           :
           (
-            <Button onClick={ dispatch( {
+            <Button onClick={ () => dispatch( {
               type: "ADD_TO_CART",
               payload: product
             } ) } disabled={ !product.inStock }>
