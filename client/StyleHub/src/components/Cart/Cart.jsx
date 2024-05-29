@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useCartContext } from '../../context/CartProvider';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
@@ -14,9 +14,17 @@ import '../style.css';
 function Cart(){
     const 
         { 
-            state: { cart, total }, 
+            state: { cart }, 
             dispatch 
         } = useCartContext();
+
+    const [ total, setTotal ] = useState(0);
+
+    useEffect(() =>
+        setTotal(
+            cart.reduce((acc, curr) => acc + Number(curr.price) * curr.qty, 0)
+        ), [cart]
+    );
 
     return (
         <div className='home'>
@@ -45,7 +53,19 @@ function Cart(){
                                         <Rating rating={ product.rating }/>
                                     </Col>
                                     <Col md={ 2 }>
-                                        <Form.Control as='select' value={ product.qty }>
+                                        <Form.Control 
+                                            as='select' 
+                                            value={ product.qty }
+                                            onChange={(e) => dispatch(
+                                                {
+                                                    type: "CHANGE_CART_QTY",
+                                                    payload: {
+                                                        id: product.id,
+                                                        qty: e.target.value
+                                                    }
+                                                }
+                                            )}
+                                            >
                                             {
                                                 [
                                                     ...Array(product.inStock).keys()

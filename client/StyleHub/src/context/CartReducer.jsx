@@ -3,14 +3,21 @@ export const CartReducer = ( state, action ) => {
         case "ADD_TO_CART":
             return { 
                 ...state, 
-                cart: [ ...state.cart, { ...action.payload, qty: 1 } ],
-                total: state.total + ( Number(action.payload.price.split('.')[0] ) )
+                cart: [ ...state.cart, { ...action.payload, qty: 1 } ]
             };
         case "REMOVE_FROM_CART":
             return { 
                 ...state, 
-                cart: state.cart.filter( ( prod ) => prod.id !== action.payload.id ),
-                total: state.total - ( action.payload ? parseFloat(action.payload.price.split('.')[0]) : 0 ) 
+                cart: state.cart.filter( ( prod ) => prod.id !== action.payload )
+            };
+        case "CHANGE_CART_QTY":
+            return {
+                ...state,
+                cart: state.cart.map(product =>
+                    product.id === action.payload.id
+                    ? { ...product, qty: action.payload.qty }
+                    : product
+                )
             };
         default:
             return state;

@@ -26,8 +26,7 @@ function CartProvider({ children }) {
 
     const [ state, dispatch ] = useReducer( CartReducer, {
         products,
-        cart: [],
-        total: 0
+        cart: []
     } );
 
   return (
