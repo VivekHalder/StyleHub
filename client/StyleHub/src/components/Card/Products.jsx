@@ -39,7 +39,7 @@ function Products({ product }) {
             <Button 
               onClick={ () => dispatch( {
                 type: "REMOVE_FROM_CART",
-                payload: product.id
+                payload: product
               } ) } 
               variant='danger'
             >

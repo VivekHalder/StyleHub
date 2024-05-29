@@ -23,9 +23,11 @@ function CartProvider({ children }) {
         category: generateRandom(["All Categories", "Tops", "Bottoms", "Dresses", "Outerwear", "Activewear"])
     }));
     
+
     const [ state, dispatch ] = useReducer( CartReducer, {
         products,
-        cart: []
+        cart: [],
+        total: 0
     } );
 
   return (
