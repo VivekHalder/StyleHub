@@ -16,7 +16,7 @@ function Home() {
     } } = useFilterContext();
 
     const transformProducts = () => {
-        let sortedProducts = products;
+        let sortedProducts = [...products];
 
         if(sort){
             sortedProducts = sortedProducts.sort( ( a, b ) => 
@@ -28,23 +28,24 @@ function Home() {
         }
 
         if(!byStock){
-            sortedProducts.filter((product) => product.inStock);
+            sortedProducts = sortedProducts.filter((product) => product.inStock);
         }
 
         if(!byFastDelivery){
-            sortedProducts.filter((product) => product.fastDelivery);
+            sortedProducts = sortedProducts.filter((product) => product.fastDelivery);
         }
 
         if(!byRating){
-            sortedProducts.filter((product) => product.rating >= byRating);
+            sortedProducts = sortedProducts.filter((product) => product.rating >= byRating);
         }
 
         if(searchQuery){
-            sortedProducts.filter((product) => product.name.toLowerCase().includes(searchQuery));
+            sortedProducts = sortedProducts.filter((product) => product.name.toLowerCase().includes(searchQuery));
         }
 
         return sortedProducts;
     }
+
 
   return (
     <div className='flex'>

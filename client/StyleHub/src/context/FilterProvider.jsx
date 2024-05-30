@@ -1,9 +1,9 @@
 import { useContext, useReducer } from "react";
-import { CartReducer } from "./CartReducer";
 import FilterContext from "./FilterContext";
+import { FilterReducer } from "./FilterReducer";
 
 function FilterProvider({ children }) {
-    const [ filterState, filterDispatch ] = useReducer( CartReducer, {
+    const [ filterState, filterDispatch ] = useReducer( FilterReducer, {
         byStock: false,
         byFastDelivery: false,
         byRating: 0,

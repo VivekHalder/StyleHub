@@ -17,7 +17,6 @@ function Filter() {
         filterDispatch 
     } = useFilterContext();
 
-    const [ rate, setRate ] = useState(2)
 
   return (
     <div className='filters'>

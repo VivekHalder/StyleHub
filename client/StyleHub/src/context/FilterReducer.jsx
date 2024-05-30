@@ -1,29 +1,29 @@
-export const FilterReducer = ( state, action ) => {
-    switch(action.type){
+export const FilterReducer = (filterState, filterAction) => {
+    switch (filterAction.type) {
         case "SORT_BY_PRICE":
             return {
-                ...state,
-                sort: action.payload
+                ...filterState,
+                sort: filterAction.payload
             };
         case "FILTER_BY_STOCK":
             return {
-                ...state,
-                byStock: !byStock
+                ...filterState,
+                byStock: !filterState.byStock
             };
         case "FILTER_BY_DELIVERY":
             return {
-                ...state,
-                byFastDelivery: !byFastDelivery
+                ...filterState,
+                byFastDelivery: !filterState.byFastDelivery
             };
         case "FILTER_BY_RATING":
             return {
-                ...state,
-                byRating: !byRating
+                ...filterState,
+                byRating: filterAction.payload
             };
         case "FILTER_BY_SEARCH":
             return {
-                ...state,
-                searchQuery: action.payload
+                ...filterState,
+                searchQuery: filterAction.payload
             };
         case "CLEAR_FILTERS":
             return {
@@ -33,6 +33,6 @@ export const FilterReducer = ( state, action ) => {
                 searchQuery: ""
             };
         default:
-            return state;
+            return filterState;
     }
-}
+};
