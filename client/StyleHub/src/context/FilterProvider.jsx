@@ -3,7 +3,7 @@ import { CartReducer } from "./CartReducer";
 import FilterContext from "./FilterContext";
 
 function FilterProvider({ children }) {
-    const [ state, dispatch ] = useReducer( CartReducer, {
+    const [ filterState, filterDispatch ] = useReducer( CartReducer, {
         byStock: false,
         byFastDelivery: false,
         byRating: 0,
@@ -12,7 +12,7 @@ function FilterProvider({ children }) {
 
 
     return (
-        <FilterContext.Provider value={{ state, dispatch }}>
+        <FilterContext.Provider value={{ filterState, filterDispatch }}>
             {
                 children
             }
