@@ -3,8 +3,19 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import '../style.css'
 import { Rating } from '../index'
+import { useFilterContext } from '../../context/FilterProvider'
 
 function Filter() {
+
+    const { 
+        filterState: { 
+            byStock,
+            byFastDelivery,
+            byRating,
+            searchQuery,
+        }, 
+        filterDispatch 
+    } = useFilterContext();
 
     const [ rate, setRate ] = useState(2)
 
@@ -20,6 +31,12 @@ function Filter() {
                 name="group1"
                 type="radio"
                 id={`inline-1`}
+                onChange={() => {
+                    filterDispatch({
+                        type: "SORT_BY_PRICE",
+                        payload: "lowToHigh"
+                    })
+                }}
             />
         </span>
         <span>
@@ -29,6 +46,12 @@ function Filter() {
                 name="group1"
                 type="radio"
                 id={`inline-2`}
+                onChange={() => {
+                    filterDispatch({
+                        type: "SORT_BY_PRICE",
+                        payload: "highToLow"
+                    })
+                }}
             />
         </span>
         <span>
@@ -38,6 +61,10 @@ function Filter() {
                 name="group1"
                 type="checkbox"
                 id={`inline-3`}
+                onChange={() => filterDispatch({
+                    type: "FILTER_BY_STOCK"
+                })}
+                checked={ byStock }
             />
         </span>
         <span>
@@ -47,15 +74,32 @@ function Filter() {
                 name="group1"
                 type="checkbox"
                 id={`inline-4`}
+                onChange={() => filterDispatch({
+                    type: "FILTER_BY_DELIVERY"
+                })}
             />
         </span>
         <span className='flex'>
             <label style={{ paddingRight: "10px" }}>
                 Rating: 
             </label>
-            <Rating rating={ rate } onClick={(index) => setRate(index+1)} style={{ cursor: "pointer" }}/>
+            <Rating 
+                rating={ byRating } 
+                onClick={(index) => filterDispatch(
+                    {
+                        type: "FILTER_BY_RATING",
+                        payload: index + 1
+                    }
+                )} 
+                style={{ cursor: "pointer" }}
+            />
         </span>
-        <Button variant="light">
+        <Button 
+            variant="light"
+            onClick={() => filterDispatch({
+                type: "CLEAR_FILTERS"
+            })}
+        >
             Clear Filters
         </Button>
     </div>

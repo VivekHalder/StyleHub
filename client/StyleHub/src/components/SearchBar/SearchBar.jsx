@@ -1,8 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { useFilterContext } from '../../context/FilterProvider';
 
 function Display() {
+
+  const {
+    filterDispatch
+  } = useFilterContext();
+
+  const [ searchQuery, setSearchQuery ] = useState('');
+
+  const handleQueryChange = (e) => {
+    setSearchQuery(e.target.value);
+  }
+
+  const handleSearch = () => {
+    if( searchQuery === "" ) return ;
+    else {
+      filterDispatch({
+        type: "FILTER_BY_SEARCH",
+        payload: searchQuery
+      })
+    }
+  }
+
   return (
     <div className='h-1/6 w-full flex justify-center'>
       <div className='w-4/5 m-4 flex justify-center'>
@@ -19,9 +41,14 @@ function Display() {
             className='w-full py-2 text-xl px-2'
             type="input"
             placeholder='Search StyleHub' 
+            value={ searchQuery }
+            onChange={handleQueryChange}
             style={{outline: '1px solid #ccc'}}
           />
-          <button className='rounded-sm absolute right-0 top-0 h-full flex items-center px-4 text-white bg-black'>
+          <button 
+            className='rounded-sm absolute right-0 top-0 h-full flex items-center px-4 text-white bg-black'
+            onClick={handleSearch}
+          >
             <FontAwesomeIcon icon={faSearch} />
           </button>
         </div>
