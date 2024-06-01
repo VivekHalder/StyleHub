@@ -1,4 +1,4 @@
-;import React from 'react';
+;import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell } from '@fortawesome/free-solid-svg-icons'
 import Dropdown from 'react-bootstrap/Dropdown'
@@ -16,6 +16,8 @@ function Navbar() {
         state: { cart },
         dispatch
     } = useCartContext();
+
+    const [ isLoggedIn, setIsLoggedIn ] = useState(false);
 
   return (
     <>
@@ -117,7 +119,35 @@ function Navbar() {
                         </Dropdown>
                     </li>
                     <li className='my-auto pl-3 pl-5'>
-                        Account
+                        <Dropdown>
+                            <Dropdown.Toggle variant='outline-light' className='text-black'>
+                                {
+                                    !isLoggedIn ? 'Hello, sign in\nAccount & Lists' : 'Account'
+                                }
+                            </Dropdown.Toggle>
+                        
+                            <Dropdown.Menu>
+                                <Dropdown.Item>
+                                            {
+                                                !isLoggedIn ? 
+                                                    <div className='flex flex-col'>
+                                                        <Link to='/login'>
+                                                            <Button>
+                                                                Sign In
+                                                            </Button>
+                                                        </Link>
+                                                        <span>
+                                                            New Cutomer? Start here.
+                                                        </span>
+                                                    </div>
+                                                :
+                                                    <Button>
+                                                        Sign out
+                                                    </Button>
+                                            }
+                                </Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
                     </li>
                 </ul>
             </div>

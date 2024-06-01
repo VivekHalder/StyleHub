@@ -2,6 +2,22 @@
     display: flex;
 }
 
+.auth-container {
+    height: 100vh;
+    background-color: #f8f9fa;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+.auth-card h2 {
+    color: #343a40;
+}
+
+
 .productContainer{
     display: flex;
     width: 78%;
