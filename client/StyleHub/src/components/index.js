@@ -6,5 +6,5 @@ import Rating from "./Rating/Rating.jsx";
 import Cart from './Cart/Cart.jsx';
 import Login from './Login/Login.jsx';
 import SignUp from './SignUp/SignUp.jsx';
-
-export { Header, Home, Filter, Products, Rating, Cart, Login, SignUp };
+import LandingPage from "./LandingPage/LandingPage.jsx";
+export { Header, Home, Filter, Products, Rating, Cart, Login, SignUp, LandingPage };
