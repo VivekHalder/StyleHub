@@ -11,3 +11,11 @@
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
 }
+.h-125
+{
+    height: 480px;
+}
+.w-125
+{
+    width: 480px;
+}

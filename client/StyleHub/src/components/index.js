@@ -7,4 +7,5 @@ import Cart from './Cart/Cart.jsx';
 import Login from './Login/Login.jsx';
 import SignUp from './SignUp/SignUp.jsx';
 import LandingPage from "./LandingPage/LandingPage.jsx";
-export { Header, Home, Filter, Products, Rating, Cart, Login, SignUp, LandingPage };
+import ProductPage from "./ProductPage/ProductPage.jsx";
+export { Header, Home, Filter, Products, Rating, Cart, Login, SignUp, LandingPage, ProductPage };
