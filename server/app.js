@@ -6,7 +6,12 @@ const cookieParser = require("cookie-parser");
 const fileUpload = require("express-fileupload");
 const cors = require("cors");
 
-app.use(cors());
+app.use(cors(
+  {
+    origin: "http://localhost:5173",
+    credentials: true
+  }
+));
 
 //for swagger documentation
 const swaggerUi = require("swagger-ui-express");
@@ -40,11 +45,11 @@ const payment = require("./routes/payment");
 const order = require("./routes/order");
 
 //router middleware
-app.use("/api/v1", user);
-app.use("/api/v1", product);
-app.use("/api/v1", warehouse);
-app.use("/api/v1",payment);
-app.use("/api/v1",order);
+app.use("/api/v1/user", user);
+app.use("/api/v1/product", product);
+app.use("/api/v1/warehouse", warehouse);
+app.use("/api/v1/payment",payment);
+app.use("/api/v1/order",order);
 
 //export app js
 module.exports = app;
