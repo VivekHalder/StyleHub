@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from 'axios';
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
@@ -14,8 +15,18 @@ const data = {
   Price: "2000",
 };
 
+const fetchProducts = async () => {
+  const res = await axios.get('http://localhost:4000/api/v1/product/products', { withCredentials: true });
+  console.log(res.data.products);
+}
+
 const ProductPage = () => {
   const [size, setSize] = useState("S");
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
   return (
     <div className="h-screen w-screen flex flex-col md:flex-row align-center items-center justify-center">
       <div className="h-125 w-125">
