@@ -75,63 +75,63 @@ exports.logout = BigPromise(async (req, res, next) => {
   });
 });
 
-exports.forgotPassword = BigPromise(async (req,res,next)=>{
-  const {email} = req.body;
+exports.forgotPassword = BigPromise(async (req, res, next) => {
+  const { email } = req.body;
 
-  const user = await User.findOne({email});
+  const user = await User.findOne({ email });
 
-  if(!user){
-      return next(new CustomError('Email not registered',400));
+  if (!user) {
+    return next(new CustomError('Email not registered', 400));
   }
 
   const forgotToken = user.getForgotPasswordToken()
 
-  await user.save({validateBeforeSave: false})
+  await user.save({ validateBeforeSave: false })
 
-  const myUrl = `${req.protocol}://${req.get("host")}/api/v1/password/reset/${forgotToken}`
+  const myUrl = `${req.protocol}://${req.get("host")}/api/v1/user/password/reset/${forgotToken}`
 
   const message = `Copy paste this link in ur URL and hit enter \n\n ${myUrl}`
 
   try {
-      await mailHelper({
-          email: user.email,
-          subject: "StyleHub : Password reset email",
-          message,
-      });
+    await mailHelper({
+      email: user.email,
+      subject: "StyleHub : Password reset email",
+      message,
+    });
 
-      res.status(200).json({
-          success: true,
-          message: "Email sent successfully"
-      })
+    res.status(200).json({
+      success: true,
+      message: "Email sent successfully"
+    })
   } catch (error) {
-      user.forgotPasswordToken = undefined
-      user.forgotPasswordExpiry = undefined
-      await user.save({validateBeforeSave: false})
+    user.forgotPasswordToken = undefined
+    user.forgotPasswordExpiry = undefined
+    await user.save({ validateBeforeSave: false })
 
-      return next(new CustomError(error.message,500));
+    return next(new CustomError(error.message, 500));
   }
 });
 
-exports.passwordReset = BigPromise(async (req,res,next)=>{
+exports.passwordReset = BigPromise(async (req, res, next) => {
   const token = req.params.token;
   const encryToken = crypto
-  .createHash('sha256')
-  .update(token)
-  .digest('hex');
+    .createHash('sha256')
+    .update(token)
+    .digest('hex');
 
   //console.log(encryToken);
 
   const user = await User.findOne({
-      forgotPasswordToken: encryToken,
-      forgotPasswordExpiry: {$gt: Date.now()}
+    forgotPasswordToken: encryToken,
+    forgotPasswordExpiry: { $gt: Date.now() }
   });
 
-  if(!user){
-      return next(new CustomError('Token is invalid or expired',400));
+  if (!user) {
+    return next(new CustomError('Token is invalid or expired', 400));
   }
 
-  if(req.body.password != req.body.confirmPassword){
-      return next(new CustomError('Password and Confirm Password do not match',400));
+  if (req.body.password != req.body.confirmPassword) {
+    return next(new CustomError('Password and Confirm Password do not match', 400));
   }
 
   user.password = req.body.password
@@ -139,26 +139,26 @@ exports.passwordReset = BigPromise(async (req,res,next)=>{
   user.forgotPasswordExpiry = undefined
   await user.save();
 
-  cookieToken(user,res);
+  cookieToken(user, res);
 
 });
 
-exports.changePassword = BigPromise(async (req,res,next)=>{
+exports.changePassword = BigPromise(async (req, res, next) => {
   const userId = req.user.id
-  
+
   const user = await User.findById(userId).select("+password");
 
   const isCorrectOldPassword = await user.isValidatedPassword(req.body.oldPassword)
 
-  if(!isCorrectOldPassword){
-      return next(new CustomError('Old password is incorrect',400));
+  if (!isCorrectOldPassword) {
+    return next(new CustomError('Old password is incorrect', 400));
   }
 
   user.password = req.body.password;
 
   await user.save();
 
-  cookieToken(user,res);
+  cookieToken(user, res);
 });
 
 exports.getCartItems = BigPromise(async (req, res, next) => {
@@ -408,6 +408,47 @@ exports.updateUserDetails = BigPromise(async (req, res, next) => {
     user,
   });
 });
+
+const otps = {};
+
+exports.sendEmailOtp = BigPromise(async (req, res, next) => {
+  const { email } = req.body;
+
+  const emailVerificationOtp = (Math.floor(100000 + Math.random() * 900000).toString());
+  const emailVerificationOtpExpires = Date.now() + (3600000  * 2);
+
+  otps[email] = { otp: emailVerificationOtp, expires: emailVerificationOtpExpires };
+
+  const mailOptions = {
+    email,
+    subject: 'Email Verification OTP',
+    text: `Your verification code is ${emailVerificationOtp}. It will expire in 2 hour.`
+  }
+
+  await mailHelper(mailOptions);
+});
+
+exports.verifyEmail = BigPromise(async (req, res, next) => {
+  const { email, otp } = req.body;
+
+  const storedOtp = otps[email];
+
+  if (!storedOtp) {
+    return res.status(400).send('OTP not found for this email');
+  }
+
+  if (storedOtp.otp !== otp) {
+    return res.status(400).send('Invalid OTP');
+  }
+
+  if (storedOtp.expires < Date.now()) {
+    return res.status(400).send('OTP has expired');
+  }
+
+  delete otps[email];
+
+  res.status(200).send('OTP verified successfully. You can now create your account.');
+})
 
 exports.getLoggedInUserDetails = BigPromise(async (req, res, next) => {
   const user = await User.findById(req.user.id);

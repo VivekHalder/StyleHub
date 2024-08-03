@@ -1,8 +1,9 @@
 const nodemailer = require("nodemailer");
 
 
-const mailHelper = async (options) =>{
+const mailHelper = async ({ email, subject, message }) =>{
     const transporter = nodemailer.createTransport({
+        service: 'Gmail',
         host: process.env.SMTP_HOST,
         port: process.env.SMTP_PORT,
         auth: {
@@ -11,14 +12,25 @@ const mailHelper = async (options) =>{
         },
       });
 
-    const message = {
+    const mailOptions = {
         from: 'goswamiatmik@gmail.com', // sender address
-        to: options.email, // list of receivers
-        subject: options.subject, // Subject line
-        text: options.message, // plain text body
+        to: email, // list of receivers
+        subject: subject, // Subject line
+        text: message, // plain text body
     }
     
-    await transporter.sendMail(message);
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        return res
+                .status(500)
+                .send(error.toString())
+      } else {
+        console.log('Email sent: ', info.response);
+        return res
+                .status(200)
+                .send('The OTP was sent successfully. Please check your email.')
+      }
+    });
 }
 
 module.exports = mailHelper

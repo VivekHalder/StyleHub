@@ -16,6 +16,10 @@ const userSchema = new mongoose.Schema({
     validate: [validator.isEmail, "Please enter email in correct format"],
     unique: true,
   },
+  emailVerified: {
+    type: Boolean,
+    default: false
+  },
   mobile: {
     type: String,
     required: [true, "Please provide mobile number"],
